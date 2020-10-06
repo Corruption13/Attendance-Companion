@@ -1,6 +1,6 @@
-# bunk_master
+# bunk_mate
 
-Attendance Hack
+A new Flutter application.
 
 ## Getting Started
 

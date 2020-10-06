@@ -1,4 +1,4 @@
-package com.sandy.bunk_master;
+package com.sandy.bunk_mate;
 
 import io.flutter.embedding.android.FlutterActivity;
 
