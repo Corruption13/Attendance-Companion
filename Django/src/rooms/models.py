@@ -1,10 +1,10 @@
 from django.db import models
-import uuid
+import secrets
 
 # Create your models here.
 
 class Room(models.Model):
-    room_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False )
+    room_id = models.CharField(max_length=6, default=secrets.token_hex(3).upper(), editable=False)
     #room_id = models.IntegerField(primary_key=True)
 
     room_name = models.CharField(max_length=120)
@@ -17,3 +17,6 @@ class Room(models.Model):
     
     def __str__(self):
         return self.room_name
+
+
+     
