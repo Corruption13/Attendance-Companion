@@ -3,8 +3,11 @@ import secrets
 
 # Create your models here.
 
+def get_code():
+  return secrets.token_hex(3).upper()
+
 class Room(models.Model):
-    room_id = models.CharField(max_length=6, default=secrets.token_hex(3).upper(), editable=False)
+    room_id = models.CharField(max_length=6, default=get_code, editable=False)
     #room_id = models.IntegerField(primary_key=True)
 
     room_name = models.CharField(max_length=120)
