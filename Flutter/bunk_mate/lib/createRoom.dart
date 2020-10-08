@@ -1,42 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'API.dart';
 
 
-
-
-var urlBase = "http://192.168.1.10:8000/";   // Change this to the Django Device IP4 Address or API URL
-// For Debug, run django using:
-// python manage.py runserver 0.0.0.0:8000
-
-
-Future sendRoomAPI(String name, String description) async {
-  final http.Response response = await http.post(
-    urlBase + 'create/',
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      "room_name": name,
-      "details": description
-    }),
-  );
-  if (response.statusCode == 201) {
-    // If the server did return a 201 CREATED response,
-    // then parse the JSON.
-    print("Ok");
-  } else {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
+class CreateRoomForm extends StatefulWidget {
+  @override
+  _CreateRoomFormState createState() => _CreateRoomFormState();
 }
 
+class _CreateRoomFormState extends State<CreateRoomForm> {
 
-class CreateRoomForm extends StatelessWidget {
-  @override
   String _name;
   String _description;
+  String _debugLocalIP;
+
   final GlobalKey<FormState>  _formKey = GlobalKey<FormState>();
 
   Widget _buildName(){
@@ -55,6 +31,7 @@ class CreateRoomForm extends StatelessWidget {
 
     );
   }
+
   Widget _buildDescription(){
     return TextFormField(
       decoration: InputDecoration(labelText: "Room Description"),
@@ -65,33 +42,76 @@ class CreateRoomForm extends StatelessWidget {
     );
   }
 
+  Widget _buildLocalIP(){
+    return TextFormField(
+      decoration: InputDecoration(labelText: "#Debug: Django localIP:port:"),
+
+      onSaved: (String value){
+        _debugLocalIP = value;
+      },
+    );
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create Class Room"),),
+
       body: Padding(
         padding: const EdgeInsets.all(50.0),
         child: Container(
 
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                _buildName(),
-                _buildDescription(),
-                RaisedButton(
-                  child:Text("Submit"),
-                  onPressed: (){
-                    if(!_formKey.currentState.validate()){
-                      return;
-                    }
-                    _formKey.currentState.save();
-                    sendRoomAPI(_name, _description);
-                  },
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 100, 0, 10),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                            Icons.whatshot,
+                            color: const Color(0xFF000000),
+                            size: 35.0),
+                        SizedBox(width: 24,),
+                        Text(
+                          "Create Room",
+                          style:  TextStyle(fontSize:30.0,
+                              color: const Color(0xFF000000),
+                              fontWeight: FontWeight.w200,
+                              fontFamily: "Roboto"),
+                        ),
 
-                ),
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                        )
+                      ]
 
-              ],
+                  ),
+                  _buildName(),
+                  _buildDescription(),
+                  SizedBox(height: 75,),
+                  RaisedButton(
+                    color: Colors.amberAccent,
+                    child:Text("Submit"),
+                    onPressed:  () async{
+                      if(!_formKey.currentState.validate()){
+                        return;
+                      }
+                      _formKey.currentState.save();
+                      var item = await sendRoomAPI(_name, _description, "user") ;
+
+                      await Navigator.pushNamed(context, "created", arguments: item );
+                    },
+
+                  ),
+                  SizedBox(height:20),
+                  _buildLocalIP(),
+
+
+                ],
+              ),
             ),
           ),
         ),

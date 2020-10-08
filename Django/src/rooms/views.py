@@ -4,6 +4,8 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
 
+
+
 # Create your views here.
 
 from .models import Room                       
@@ -22,8 +24,9 @@ def room_create(request):
         room_data = JSONParser().parse(request)
         room_serializer = RoomSerializer(data=room_data)
         if room_serializer.is_valid():
-            room_serializer.save()
-            return JsonResponse(room_serializer.data, status=status.HTTP_201_CREATED)
+            item = room_serializer.save()
+            room_id={'room_id': item.room_id}
+            return JsonResponse(room_id, status=status.HTTP_201_CREATED)
         return JsonResponse(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
      
     

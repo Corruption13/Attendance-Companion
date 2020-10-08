@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'createRoom.dart';
+import 'joinRoom.dart';
+import 'myRooms.dart';
+import 'roomCreated.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,7 +25,14 @@ class MyApp extends StatelessWidget {
       routes: {
         "home": (context) => Home(),
         "createRoom": (context) => CreateRoomForm(),
+        "joinRoom": (context) => JoinRoom(),
+        "myRooms": (context) => MyRooms(),
+        "created": (context) => RoomID(),
       },
     );
   }
 }
+
+
+
+// Refer to API.dart for debug details.
