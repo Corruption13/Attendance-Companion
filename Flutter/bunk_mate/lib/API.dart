@@ -1,14 +1,19 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-final String urlBase = "http://192.168.1.10:8000/";   // Change this to the Django Device IP4 Address or API URL
+String urlBase = "http://192.168.1.10:8000/";   // Change this to the Django Device IP4 Address or API URL
 // For Debug, run django using:
 // python manage.py runserver 0.0.0.0:8000
 
 /// TODO: SET urlBase to domain address on deployment.
 
 
-Future sendRoomAPI(String name, String description, String user, {String debugIP = "http://192.168.1.10:8000/"}) async {
+Future sendRoomAPI(String name, String description, String user, String debugIP) async {
+
+  if(debugIP != ""){
+    urlBase = "http://" + debugIP ;
+  }
+  print("test" + debugIP);
   final http.Response response = await http.post(
     urlBase + 'create/',
     headers: <String, String>{
@@ -27,6 +32,7 @@ Future sendRoomAPI(String name, String description, String user, {String debugIP
     print(values);
     return values;
   } else {
+    print("Error");
     return -1;
   }
 }

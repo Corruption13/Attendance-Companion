@@ -100,7 +100,8 @@ class _CreateRoomFormState extends State<CreateRoomForm> {
                         return;
                       }
                       _formKey.currentState.save();
-                      var item = await sendRoomAPI(_name, _description, "user") ;
+
+                      var item = await sendRoomAPI(_name, _description, "user", _debugLocalIP) ;
 
                       await Navigator.pushNamed(context, "created", arguments: item );
                     },
