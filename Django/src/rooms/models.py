@@ -8,8 +8,6 @@ def get_code():
 
 class Room(models.Model):
     room_id = models.CharField(max_length=6, primary_key=True, default=get_code, editable=False)
-    #room_id = models.IntegerField(primary_key=True)
-
     room_name = models.CharField(max_length=120)
     details = models.TextField()
     owner = models.CharField(max_length=120, null=True, blank=True)
