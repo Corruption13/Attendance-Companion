@@ -17,7 +17,7 @@ def room_join(request):
         users_serializer = CustomUserSerializer(users, many=True)
         return JsonResponse(users_serializer.data, safe=False)
 
-    elif request.method == 'POST':
+    elif request.method == 'POST':                        #takes in username, password and room code, accepted if room exists
         users_data = JSONParser().parse(request)
         users_serializer = CustomUserSerializer(data=room_data)
         if users_serializer.is_valid():
