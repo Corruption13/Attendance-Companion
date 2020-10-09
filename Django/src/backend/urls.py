@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from rooms import views
+from rooms.views import room_create
+from users.views import room_join
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('create/', views.room_create)
+    path('create/', room_create),
+    path('join/', room_join)
 ]
