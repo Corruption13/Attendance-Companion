@@ -36,8 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rooms',
     'users',
+    'status',
     'rest_framework',
     'corsheaders',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +74,15 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+  # 'DEFAULT_PERMISSION_CLASSES': (
+  #      'rest_framework.permissions.IsAuthenticated',
+  #  ),
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+      'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
@@ -86,7 +97,7 @@ DATABASES = {
 }
 
 # Custom user model
-AUTH_USER_MODEL = 'users.CustomUser'
+#AUTH_USER_MODEL = 'users.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

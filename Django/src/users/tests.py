@@ -1,46 +1,83 @@
-from django.test import TestCase
+from django.urls import reverse
+from rest_framework.test import APITestCase
+from django.contrib.auth.models import User
+from rest_framework import status
+from rest_framework.authtoken.models import Token
 
-# Create your tests here.
+class AccountsTest(APITestCase):
+    def setUp(self):
+        # We want to go ahead and originally create a user. 
+        self.test_user = User.objects.create_user('testuser', 'testpassword')
 
-from django.test import TestCase
-from django.contrib.auth import get_user_model
+        # URL for creating an account.
+        self.create_url = reverse('account-create')
 
-
-class UsersManagersTests(TestCase):
 
     def test_create_user(self):
-        User = get_user_model()
-        user = User.objects.create_user(email='normal@user.com', password='foo')
-        self.assertEqual(user.email, 'normal@user.com')
-        self.assertTrue(user.is_active)
-        self.assertFalse(user.is_staff)
-        self.assertFalse(user.is_superuser)
-        try:
-            # username is None for the AbstractUser option
-            # username does not exist for the AbstractBaseUser option
-            self.assertIsNone(user.username)
-        except AttributeError:
-            pass
-        with self.assertRaises(TypeError):
-            User.objects.create_user()
-        with self.assertRaises(TypeError):
-            User.objects.create_user(email='')
-        with self.assertRaises(ValueError):
-            User.objects.create_user(email='', password="foo")
 
-    def test_create_superuser(self):
-        User = get_user_model()
-        admin_user = User.objects.create_superuser('super@user.com', 'foo')
-        self.assertEqual(admin_user.email, 'super@user.com')
-        self.assertTrue(admin_user.is_active)
-        self.assertTrue(admin_user.is_staff)
-        self.assertTrue(admin_user.is_superuser)
-        try:
-            # username is None for the AbstractUser option
-            # username does not exist for the AbstractBaseUser option
-            self.assertIsNone(admin_user.username)
-        except AttributeError:
-            pass
-        with self.assertRaises(ValueError):
-            User.objects.create_superuser(
-                email='super@user.com', password='foo', is_superuser=False)
+        data = {
+                'username': 'foobar',
+                'password': 'somepassword'
+                }
+
+        response = self.client.post(self.create_url , data, format='json')
+        user = User.objects.latest('id')
+        token = Token.objects.get(user=user)
+        self.assertEqual(response.data['token'], token.key)
+
+
+    def test_create_user_with_short_password(self):
+        
+        data = {
+                'username': 'foobar',
+                'password': 'foo'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(len(response.data['password']), 1)
+
+    def test_create_user_with_no_password(self):
+        data = {
+                'username': 'foobar',
+                'password': ''
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(len(response.data['password']), 1)
+
+    def test_create_user_with_too_long_username(self):
+        data = {
+            'username': 'foo'*30,
+            'password': 'foobar'
+        }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(len(response.data['username']), 1)
+
+    def test_create_user_with_no_username(self):
+        data = {
+                'username': '',
+                'password': 'foobar'
+                }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(len(response.data['username']), 1)
+
+    def test_create_user_with_preexisting_username(self):
+        data = {
+                'username': 'testuser',
+                'password': 'testuser'
+                }
+
+        response = self.client.post(self.create_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(len(response.data['username']), 1)

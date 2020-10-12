@@ -1,9 +1,12 @@
-from django.contrib import admin
+"""from django.contrib import admin
+from django.contrib.auth.models import User
 
 # Register your models here.
 
-from .models import CustomUser
+class UserModelAdmin(admin.ModelAdmin):
+	list_display = ["username", "password"]           
+	
+	class Meta:                     
+		model = User
 
-# Register your models here.
-
-admin.site.register(CustomUser) 
+admin.site.register(User, UserModelAdmin) """
