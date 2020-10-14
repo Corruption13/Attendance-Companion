@@ -7,7 +7,8 @@ from rest_framework.authtoken.models import Token
 # Create your views here.
 
 from rooms.models import Room   
-from django.contrib.auth.models import User                
+from users.models import User  
+from .models import Status              
 from .serializers import StatusSerializer    
 from rest_framework.decorators import api_view
 
@@ -20,13 +21,14 @@ def room_join(request):
         #return Response(status_serializer.initial_data)
 
         if status_serializer.is_valid():
-            status = status_serializer.save(commit=False)
+            status = status_serializer.data      #serializer.data is a dictionary
             #status = status_serializer.save()
-            #return Response(status_serializer.data)
+            #return Response(temp)
             #json = status_serializer.data
-            username = User.objects.get(username=status.username)
-            room_id = Room.objects.get(room_id=status.room_id)
-            status = Status.objects.update(username=username, room_id = room_id, priority=0)
+            
+            room = Room.objects.get(room_id=status["room_id"])   #hence access like this
+            user = User.objects.get(username=status["username"])
+            status = Status.objects.create(username=user, room_id = room, priority=0)
             status.save()
 
             return Response(status_serializer.data)

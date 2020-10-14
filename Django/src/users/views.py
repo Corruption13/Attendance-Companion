@@ -29,11 +29,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer
-from django.contrib.auth.models import User
+from users.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password
 
 #class UserCreate(APIView):  
 #def post(self, request, format='json'):
@@ -41,7 +42,11 @@ from django.contrib.auth import authenticate
 def user_register(request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
+            #UserSerializer.create(serializer)
+            #user = serializer.data
+            #user.set_password(serializer['password'])
+            #user.save()
+            user=serializer.save()
             if user:
                 #token = Token.objects.create(user=user)
                 json = serializer.data

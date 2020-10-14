@@ -8,7 +8,7 @@ from rest_framework.authtoken.models import Token
 # Create your views here.
 
 from .models import Room   
-from django.contrib.auth.models import User 
+from users.models import User 
 from status.models import Status                   
 from .serializers import CreateRoomSerializer    
 from rest_framework.decorators import api_view
@@ -28,7 +28,8 @@ def room_create(request):
             #return Response(json, status=status.HTTP_201_CREATED)
             return Response(json)
         else:
-            return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(room_serializer.errors)
+            #return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
