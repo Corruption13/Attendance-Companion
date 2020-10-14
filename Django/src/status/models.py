@@ -8,11 +8,13 @@ from rooms.models import Room
 class Status(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
+    #set read_only=True
     id_users_rooms = models.AutoField(primary_key=True)
     #id_users_rooms = models.CharField(primary_key=True, default=custom_id)
-    is_owner = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
-    is_member = models.BooleanField(default=True)
+    priority = models.IntegerField()
+    #is_owner = models.BooleanField(default=False)
+    #is_admin = models.BooleanField(default=False)
+    #is_member = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 

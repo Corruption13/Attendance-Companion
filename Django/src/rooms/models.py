@@ -10,7 +10,7 @@ class Room(models.Model):
     room_id = models.CharField(max_length=6, primary_key=True, default=get_code, editable=False)
     room_name = models.CharField(max_length=120)
     details = models.TextField()
-    owner = models.CharField(max_length=120, null=True, blank=True)
+    owner = models.CharField(max_length=120)
     admins = models.CharField(max_length=120, null=True, blank=True)
     members = models.CharField(max_length=120, null=True, blank=True)
     time_table = models.TextField(null=True, blank=True)

@@ -5,7 +5,7 @@ from django.contrib import admin
 from .models import Status
 
 class StatusModelAdmin(admin.ModelAdmin):
-	list_display = ["username", "room_id", "id_users_rooms"]           
+	list_display = ["username", "room_id", "priority"]           
 	
 	class Meta:                     
 		model = Status

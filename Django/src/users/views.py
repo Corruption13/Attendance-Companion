@@ -43,9 +43,9 @@ def user_register(request):
         if serializer.is_valid():
             user = serializer.save()
             if user:
-                token = Token.objects.create(user=user)
+                #token = Token.objects.create(user=user)
                 json = serializer.data
-                json['token'] = token.key
+                #json['token'] = token.key
                 return Response(json, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -59,9 +59,11 @@ def user_login(request):
     user = authenticate(username=username, password=password)
     if not user:
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_404_NOT_FOUND)
-    token, _ = Token.objects.get_or_create(user=user)
+    token = Token.objects.create(user=user)
     #status__username=username
-    return Response({'token': token.key}, status=status.HTTP_200_OK)
+    #return Response({'token': token.key, 'user': token.user }, status=status.HTTP_200_OK)
+    return Response({'token': token.key} , status=status.HTTP_200_OK)
+
                    
 
 
