@@ -43,10 +43,12 @@ def user_register(request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             #UserSerializer.create(serializer)
-            #user = serializer.data
+            user = serializer.data
+            user['password'] = make_password(user['password'])
             #user.set_password(serializer['password'])
+            user = User.objects.create(username=user['username'], password=user['password'])
             #user.save()
-            user=serializer.save()
+            #user=serializer.save()
             if user:
                 #token = Token.objects.create(user=user)
                 json = serializer.data
