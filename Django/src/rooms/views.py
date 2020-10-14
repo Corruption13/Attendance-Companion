@@ -19,14 +19,24 @@ def room_create(request):
     if request.method == 'POST':                                      
         room_serializer = CreateRoomSerializer(data=request.data)
         if room_serializer.is_valid():
-            room = room_serializer.save()
-            json = room_serializer.data
-            username = User.objects.get(username=room.owner)
-            room_id = Room.objects.get(room_id=room.room_id)
-            #status = Status.objects.create(username=room.owner, room_id =room.room_id, priority=2)
-            status = Status.objects.create(username=username, room_id =room_id, priority=2)
-            #return Response(json, status=status.HTTP_201_CREATED)
-            return Response(json)
+
+            #json = room_serializer.data
+            #user = User.objects.get(username=room_serializer.validated_data["owner"])
+            user = User.objects.filter(username=room_serializer.validated_data["owner"])   #to make sure owner is a user
+            #return Response(owner)
+      
+
+            if user:                                   #to make sure owner is a user
+                room = room_serializer.save()
+                json = room_serializer.data
+                username = User.objects.get(username=room.owner)
+                room_id = Room.objects.get(room_id=room.room_id)
+                #status = Status.objects.create(username=room.owner, room_id =room.room_id, priority=2)
+                status = Status.objects.create(username=username, room_id =room_id, priority=2)
+                #return Response(json, status=status.HTTP_201_CREATED)
+                return Response(json)
+            else:
+                return Response({'error': 'User not registered'})
         else:
             return Response(room_serializer.errors)
             #return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

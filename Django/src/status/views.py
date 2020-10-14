@@ -28,10 +28,16 @@ def room_join(request):
             
             room = Room.objects.get(room_id=status["room_id"])   #hence access like this
             user = User.objects.get(username=status["username"])
-            status = Status.objects.create(username=user, room_id = room, priority=0)
-            status.save()
 
-            return Response(status_serializer.data)
+            duplicate = Status.objects.filter(username=user, room_id=room)
+            if duplicate:                                                 #to avoid repeated entries in status table
+                return Response({'error': 'User already part of room'})
+            else:    
+
+                status = Status.objects.create(username=user, room_id = room, priority=0)
+                #status.save()
+
+                return Response(status_serializer.data)
         else:
             #return Response(status_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(status_serializer.errors)
