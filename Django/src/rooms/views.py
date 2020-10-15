@@ -1,12 +1,6 @@
-from django.shortcuts import render
-from django.contrib import messages
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser 
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-
-# Create your views here.
-
 from .models import Room   
 from users.models import User 
 from status.models import Status                   
@@ -15,31 +9,20 @@ from rest_framework.decorators import api_view
 
 @api_view(['POST'])
 def room_create(request):
-
     if request.method == 'POST':                                      
         room_serializer = CreateRoomSerializer(data=request.data)
         if room_serializer.is_valid():
-
-            #json = room_serializer.data
-            #user = User.objects.get(username=room_serializer.validated_data["owner"])
-            user = User.objects.filter(username=room_serializer.validated_data["owner"])   #to make sure owner is a user
-            #return Response(owner)
-      
-
-            if user:                                   #to make sure owner is a user
+            token = Token.objects.filter(user=room_serializer.validated_data["owner"])  #to make sure owner is a logged in user
+            if token:
                 room = room_serializer.save()
-                json = room_serializer.data
-                username = User.objects.get(username=room.owner)
-                room_id = Room.objects.get(room_id=room.room_id)
-                #status = Status.objects.create(username=room.owner, room_id =room.room_id, priority=2)
-                status = Status.objects.create(username=username, room_id =room_id, priority=2)
-                #return Response(json, status=status.HTTP_201_CREATED)
-                return Response(json)
+                status_object = Status.objects.create(username=User.objects.get(username=room.owner),
+                                                      room_id =Room.objects.get(room_id=room.room_id), 
+                                                      priority=2)
+                return Response(room_serializer.data, status=status.HTTP_201_CREATED)
             else:
-                return Response({'error': 'User not registered'})
+                return Response({'error': 'User not logged in'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response(room_serializer.errors)
-            #return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

@@ -3,9 +3,7 @@ from .models import Room
 from django.db import models
 
 class CreateRoomSerializer(serializers.ModelSerializer):
-    #room_name = serializers.CharField(max_length=120)
-    #details = serializers.TextField()
-    class Meta:
+   class Meta:
         model = Room 
         fields = [              
             "room_name",
@@ -13,13 +11,6 @@ class CreateRoomSerializer(serializers.ModelSerializer):
             "owner",
         ]
 
-    """class Meta:
-        model = Room 
-        fields = [              
-            "room_name",
-            "details",
-            "owner",
-        ]"""
-
+    
         
       
