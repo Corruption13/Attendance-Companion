@@ -38,8 +38,9 @@ Future sendRoomAPI(String name, String description, String user, String debugIP)
 }
 
 
-
 Future joinRoom(String code, String user) async {
+
+
   final http.Response response = await http.post(
     urlBase + 'join/',
     headers: <String, String>{
