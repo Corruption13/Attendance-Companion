@@ -7,6 +7,16 @@ from status.models import Status
 from .serializers import CreateRoomSerializer    
 from rest_framework.decorators import api_view
 
+
+"""
+    API Response Table:
+
+    400 : Invalid POST
+    201: Room Created
+    401: User not logged in
+
+"""
+
 @api_view(['POST'])
 def room_create(request):
     if request.method == 'POST':                                      
@@ -26,7 +36,7 @@ def room_create(request):
                                                       priority=2)
                 return Response(room_serializer.data, status=status.HTTP_201_CREATED)
             else:
-                return Response({'error': 'User not logged in'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'User not logged in'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
