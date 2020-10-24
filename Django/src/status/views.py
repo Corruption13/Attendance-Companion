@@ -29,7 +29,6 @@ def room_join(request):
                 status_object = status_serializer.data
                      
                 room = Room.objects.get(room_id=status_object["room_id"])  
-                
                 user = User.objects.get(username=user_token)
                 duplicate = Status.objects.filter(username=user, room_id=room)
                 if duplicate:                                                 #to avoid repeated entries in status table
