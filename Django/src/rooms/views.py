@@ -34,7 +34,7 @@ def room_create(request):
                 status_object = Status.objects.create(username=User.objects.get(username=room.owner),
                                                       room_id =Room.objects.get(room_id=room.room_id), 
                                                       priority=2)
-                return Response(room_serializer.data, status=status.HTTP_201_CREATED)
+                return Response({'room_id': room.room_id}, status=status.HTTP_201_CREATED)
             else:
                 return Response({'error': 'User not logged in'}, status=status.HTTP_401_UNAUTHORIZED)
         else:

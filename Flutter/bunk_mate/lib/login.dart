@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'API.dart';
+import 'storage.dart';
+import 'helperFunctions.dart';
+
 
 class Login extends StatefulWidget {
   Login({Key key}) : super(key: key);
@@ -12,6 +15,7 @@ class _LoginState extends State<Login> {
   String _username;
   String _password;
   String _debugLocalIP;
+  bool passwordToggle = true;
 
   final GlobalKey<FormState>  _formKey = GlobalKey<FormState>();
 
@@ -35,7 +39,7 @@ class _LoginState extends State<Login> {
   Widget _buildPassword(){
     return TextFormField(
       decoration: InputDecoration(labelText: "Password"),
-
+      obscureText: passwordToggle,
       onSaved: (String value){
         _password = value;
       },
@@ -44,8 +48,11 @@ class _LoginState extends State<Login> {
 
   Widget _buildLocalIP(){
     return TextFormField(
-      decoration: InputDecoration(labelText: "#Debug: Django localIP:port:"),
-
+      decoration: InputDecoration(
+          labelText: "#Debug: Django server computer's localIP:port:",
+          hintText: "192.168.X.Y:8000/"
+          ),
+      initialValue: "192.168.1.2:8000/",
       onSaved: (String value){
         _debugLocalIP = value;
       },
@@ -76,7 +83,7 @@ class _LoginState extends State<Login> {
                             size: 35.0),
                         SizedBox(width: 24,),
                         Text(
-                          "Create Room",
+                          "Login",
                           style:  TextStyle(fontSize:30.0,
                               color: const Color(0xFF000000),
                               fontWeight: FontWeight.w200,
@@ -102,9 +109,16 @@ class _LoginState extends State<Login> {
                       _formKey.currentState.save();
 
                       var item = await login(_username, _password, _debugLocalIP) ;
+                      if(item == 1){
+                          showAlertSimple(context, "Invalid Login", "Please check your username and password!");
 
-                      //await Navigator.pushNamed(context, "created", arguments: item );
-                      print(item['token']);
+                      }
+                      else{
+                        showAlertRedirect(context, "Logged In", "Successfullly Logged In!", "Okay", "home");
+
+                      }
+
+
                     },
 
                   ),
@@ -121,3 +135,5 @@ class _LoginState extends State<Login> {
     );
   }
 }
+
+

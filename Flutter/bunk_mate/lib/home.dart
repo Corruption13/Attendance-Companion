@@ -81,6 +81,15 @@ class _HomeState extends State<Home> {
                   ),
                   color: Colors.greenAccent,
                 ),
+                SizedBox(height: 35,),
+                RaisedButton(
+                  onPressed: () => Navigator.pushNamed(context, "login"),
+                  child: Text(
+                    "Login",
+                    style: TextStyle(fontSize: 23),
+                  ),
+                  color: Colors.redAccent,
+                ),
 
               ]
 

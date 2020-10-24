@@ -10,7 +10,20 @@ class JoinRoom extends StatefulWidget {
 class _JoinRoomState extends State<JoinRoom> {
 
   String _code;
+  String _debugLocalIP;
 
+  Widget _buildLocalIP(){
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: "#Debug: Django server computer's localIP:port:",
+          hintText: "192.168.X.Y:8000/"
+      ),
+      initialValue: "192.168.1.2:8000/",
+      onSaved: (String value){
+        _debugLocalIP = value;
+      },
+    );
+  }
 
   final GlobalKey<FormState>  _formKey = GlobalKey<FormState>();
 
@@ -55,7 +68,10 @@ class _JoinRoomState extends State<JoinRoom> {
                   ),
 
                   padding: const EdgeInsets.fromLTRB(24.0, 10.0, 24.0, 24.0),
-                )
+                ),
+
+                _buildLocalIP(),
+
               ]
 
           ),
@@ -72,8 +88,10 @@ class _JoinRoomState extends State<JoinRoom> {
             if(!_formKey.currentState.validate()){
               return;
             }
+
             _formKey.currentState.save();
-            joinRoom(_code, "user");
+            joinRoomAPI(_code, _debugLocalIP);
+
           },),
     );
   }

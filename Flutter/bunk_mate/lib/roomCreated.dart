@@ -6,8 +6,7 @@ class RoomID extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var data = ModalRoute.of(context).settings.arguments;
-    var data_Map = Map<String, dynamic>.from(data);
-    String id = data_Map['room_id'];
+    String id = data;
     return Scaffold(
 
       body: Padding(

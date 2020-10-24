@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'API.dart';
-
+import 'helperFunctions.dart';
 
 class CreateRoomForm extends StatefulWidget {
   @override
@@ -34,8 +34,7 @@ class _CreateRoomFormState extends State<CreateRoomForm> {
 
   Widget _buildDescription(){
     return TextFormField(
-      decoration: InputDecoration(labelText: "Room Description"),
-
+      decoration: InputDecoration(labelText: "Password"),
       onSaved: (String value){
         _description = value;
       },
@@ -44,8 +43,11 @@ class _CreateRoomFormState extends State<CreateRoomForm> {
 
   Widget _buildLocalIP(){
     return TextFormField(
-      decoration: InputDecoration(labelText: "#Debug: Django localIP:port:"),
-
+      decoration: InputDecoration(
+          labelText: "#Debug: Django server computer's localIP:port:",
+          hintText: "192.168.X.Y:8000/"
+      ),
+      initialValue: "192.168.1.2:8000/",
       onSaved: (String value){
         _debugLocalIP = value;
       },
@@ -100,10 +102,23 @@ class _CreateRoomFormState extends State<CreateRoomForm> {
                         return;
                       }
                       _formKey.currentState.save();
+                      print("debug");
+                      var item = await createRoomAPI(_name, _description, _debugLocalIP) ;
+                      if(item == -1){
+                        showAlertSimple(context, "Error", "API could not be reached");
+                      }
+                      else if(item==1){
+                        showAlertSimple(context, "Error", "Invalid Values");
+                      }
 
-                      var item = await sendRoomAPI(_name, _description, "user", _debugLocalIP) ;
+                      else if(item==2){
+                        Navigator.pushNamed(context, "login");
+                      }
+                      else{
+                        print(item);
+                        Navigator.pushNamed(context, "created", arguments: item );
+                      }
 
-                      await Navigator.pushNamed(context, "created", arguments: item );
                     },
 
                   ),
