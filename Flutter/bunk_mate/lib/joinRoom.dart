@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'API.dart';
 
-
-
-
 class JoinRoom extends StatefulWidget {
   JoinRoom({Key key}) : super(key: key);
   @override

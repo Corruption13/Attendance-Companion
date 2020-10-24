@@ -4,6 +4,7 @@ import 'createRoom.dart';
 import 'joinRoom.dart';
 import 'myRooms.dart';
 import 'roomCreated.dart';
+import 'login.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,9 +22,10 @@ class MyApp extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: "home",
+      initialRoute: "login",
       routes: {
         "home": (context) => Home(),
+        "login": (context) => Login(),
         "createRoom": (context) => CreateRoomForm(),
         "joinRoom": (context) => JoinRoom(),
         "myRooms": (context) => MyRooms(),

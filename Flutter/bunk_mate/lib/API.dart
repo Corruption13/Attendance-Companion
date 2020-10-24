@@ -8,6 +8,37 @@ String urlBase = "http://192.168.1.10:8000/";   // Change this to the Django Dev
 /// TODO: SET urlBase to domain address on deployment.
 
 
+Future login(String username, String password, String debugIP) async{
+
+  if(debugIP != ""){
+    urlBase = "http://" + debugIP ;
+  }
+
+  final http.Response response = await http.post(
+    urlBase + 'login/',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+
+    },
+    body: jsonEncode(<String, String>{
+      "username": username,
+      "password": password
+    }),
+  );
+  var values = json.decode(response.body);
+
+
+  if (response.statusCode == 200) {
+    print("Ok");
+
+    return values;
+  } else {
+    print("Error");
+    return -1;
+  }
+
+}
+
 Future sendRoomAPI(String name, String description, String user, String debugIP) async {
 
   if(debugIP != ""){
@@ -31,7 +62,9 @@ Future sendRoomAPI(String name, String description, String user, String debugIP)
     print("Ok");
     print(values);
     return values;
-  } else {
+  }
+
+  else {
     print("Error");
     return -1;
   }
@@ -56,9 +89,10 @@ Future joinRoom(String code, String user) async {
     // If the server did return a 201 CREATED response,
     // then parse the JSON.
     print("Ok");
+    return 0;
   } else {
     // If the server did not return a 201 CREATED response,
     // then throw an exception.
-    throw Exception('Failed to load album');
+    return -1;
   }
 }
