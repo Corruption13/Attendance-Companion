@@ -12,9 +12,15 @@ def room_create(request):
     if request.method == 'POST':                                      
         room_serializer = CreateRoomSerializer(data=request.data)
         if room_serializer.is_valid():
-            token = Token.objects.filter(user=room_serializer.validated_data["owner"])  #to make sure owner is a logged in user
+            #token = Token.objects.filter(user=room_serializer.validated_data["owner"])  #to make sure owner is a logged in user
+            token = Token.objects.filter(key=request.META['HTTP_AUTHORIZATION']) 
+
             if token:
-                room = room_serializer.save()
+
+                user = Token.objects.get(key=request.META['HTTP_AUTHORIZATION']).user  # Retrieve the user linked to the token provided. 
+                room = room_serializer.save(owner=user)
+             
+
                 status_object = Status.objects.create(username=User.objects.get(username=room.owner),
                                                       room_id =Room.objects.get(room_id=room.room_id), 
                                                       priority=2)
