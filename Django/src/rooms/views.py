@@ -6,6 +6,7 @@ from users.models import User
 from status.models import Status                   
 from .serializers import CreateRoomSerializer    
 from rest_framework.decorators import api_view
+import json
 
 
 """

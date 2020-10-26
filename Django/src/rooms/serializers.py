@@ -8,7 +8,7 @@ class CreateRoomSerializer(serializers.ModelSerializer):
         fields = [              
             "room_name",
             "details",
-            "time_table",
+            "timetable",
         ]
 
     

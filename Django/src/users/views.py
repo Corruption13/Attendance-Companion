@@ -33,4 +33,3 @@ def user_login(request):
     return Response({'token': token.key} , status=status.HTTP_200_OK)
 
                    
-

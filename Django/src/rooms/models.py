@@ -13,7 +13,7 @@ class Room(models.Model):
     owner = models.CharField(max_length=120)
     admins = models.CharField(max_length=120, null=True, blank=True)
     members = models.CharField(max_length=120, null=True, blank=True)
-    time_table = models.TextField(null=True, blank=True)
+    timetable = models.TextField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
