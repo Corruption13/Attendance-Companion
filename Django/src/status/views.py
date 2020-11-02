@@ -34,7 +34,7 @@ def room_join(request):
                 if duplicate:                                                 #to avoid repeated entries in status table
                     return Response({'error': 'User already part of room'}, status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    status_object = Status.objects.create(username=user, room_id = room, priority=0)
+                    status_object = Status.objects.create(username=user, room_id= room, priority=0)
                     return Response(status_serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response({'error': 'User not logged in'}, status=status.HTTP_401_UNAUTHORIZED)  

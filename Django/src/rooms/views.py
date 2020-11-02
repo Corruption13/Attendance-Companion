@@ -6,6 +6,7 @@ from users.models import User
 from status.models import Status                   
 from .serializers import CreateRoomSerializer    
 from rest_framework.decorators import api_view
+import json
 
 
 """
@@ -21,6 +22,7 @@ from rest_framework.decorators import api_view
 def room_create(request):
     if request.method == 'POST':                                      
         room_serializer = CreateRoomSerializer(data=request.data)
+        room_serializer.initial_data["timetable"] = json.dumps(room_serializer.initial_data["timetable"], indent=4)
         if room_serializer.is_valid():
             #token = Token.objects.filter(user=room_serializer.validated_data["owner"])  #to make sure owner is a logged in user
             token = Token.objects.filter(key=request.META['HTTP_AUTHORIZATION']) 
