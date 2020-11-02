@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'API.dart';
-import 'helperFunctions.dart';
+import 'AlertFunctions.dart';
 
 class CreateRoomForm extends StatefulWidget {
   @override
@@ -73,7 +73,7 @@ class _CreateRoomFormState extends State<CreateRoomForm> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                            Icons.whatshot,
+                            Icons.create,
                             color: const Color(0xFF000000),
                             size: 35.0),
                         SizedBox(width: 24,),
@@ -103,6 +103,7 @@ class _CreateRoomFormState extends State<CreateRoomForm> {
                       }
                       _formKey.currentState.save();
                       print("debug");
+
                       var item = await createRoomAPI(_name, _description, _debugLocalIP) ;
                       if(item == -1){
                         showAlertSimple(context, "Error", "API could not be reached");

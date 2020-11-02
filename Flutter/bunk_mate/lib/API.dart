@@ -124,7 +124,7 @@ Future joinRoomAPI(String code, String debugIP) async {
     urlBase = "http://" + debugIP ;
     print("DebugIP: " + debugIP);
   }
-
+  print("Code:" + code);
   String token = await getObject('token');
 
   final http.Response response = await http.post(
@@ -134,8 +134,7 @@ Future joinRoomAPI(String code, String debugIP) async {
       'Authorization': token
     },
     body: jsonEncode(<String, String>{
-      "room_code": code,
-
+      "room_id": code,
     }),
   );
   if (response.statusCode == 201) {

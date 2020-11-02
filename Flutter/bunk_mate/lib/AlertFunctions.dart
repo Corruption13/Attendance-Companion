@@ -74,3 +74,18 @@ void showAlertSimple(BuildContext context, String header, String message) {
 
   );
 }
+
+
+
+
+Future showAlertWidget(BuildContext context, String header, Widget widget) async{
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+
+      title: Text(header),
+      content: widget,
+    ),
+
+  );
+}

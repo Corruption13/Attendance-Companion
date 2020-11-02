@@ -11,7 +11,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future getObject(String key) async{
   final prefs = await SharedPreferences.getInstance();
-  String value = prefs.get(key) ?? -1;
+  String value = prefs.get(key) ?? null;
 
   return value;
+}
+
+
+Future clearshared() async{
+  final prefs = await SharedPreferences.getInstance();
+  prefs.clear();
+
+
 }
