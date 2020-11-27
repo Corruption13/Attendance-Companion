@@ -1,7 +1,7 @@
 # Guidelines for API Documentation 
 ##### - [S Sandeep Pillai](https://github.com/Corruption13)
 
-To make the integration of the backend with the front end client, we are required to document the backend in human readable form so that any front end developer with limited knowledge of the inner workings of your front end is able to easily understand the URL endpoints, the inputs and the outputs, of the API you have built. 
+To make the integration of the backend with the front end client, we are required to document the backend in human readable form so that any front end developer with limited knowledge of the inner workings of your back end is able to easily understand the URL endpoints, the inputs and the outputs of the API you have built. 
 
 To ensure uniformity, we follow our own custom guidelines and rules in making the documentations. There is no need to follow the guidelines to the fullest, but try to follow the overall platform so that the front end team can effortlessly use your product.
 
