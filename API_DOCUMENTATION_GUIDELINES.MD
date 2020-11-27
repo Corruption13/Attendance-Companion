@@ -75,7 +75,7 @@ HTTP_AUTH = TOKEN  // Pass your Access_Token here.
  ##### Output
  ```
  {
-	"user_id": "Corruption13",
+	"user_id": "aishh2k",
 	"access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjJmOGI1NTdjMWNkMWUxZWM2ODBjZTkyYWFmY2U0NTIxMWUxZTRiNDEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVGVzdGluZzQ1NiIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9maW5pc2gtZmFjdG9yeS02NGEyMSIsImF1ZCI6ImZpbmlzaC1mYWN0b3J5LTY0YTIxIiwiYXV0aF90aW1lIjoxNjA1MTg0Mzk1LCJ1c2VyX2lkIjoidGdodGVjaDEiLCJzdWIiOiJ0Z2h0ZWNoMSIsImlhdCI6MTYwNTE4NDM5NSwiZXhwIjoxNjA1MTg3OTk1LCJlbWFpbCI6InRnaHRlY2hAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwaG9uZV9udW1iZXIiOiIrOTE5NDYyMjk0ODMwIiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJwaG9uZSI6WyIrOTE5NDYyMjk0ODMwIl0sImVtYWlsIjpbInRnaHRlY2hAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.JcCYvKd9A1ztrsC1P0-HrHGRwFiQpMgJ6iTxAufGD2vtadOwA1JcNmE_8kLVHzRo0xfnVfm5xySydhHN1xLoYuCwJxFKKFswexMIEfKg9qKJucBSNLOumLiGj081-Wh42OtvKGPS2Oc1VnUTz6hTLRFVtaae-tw27Q52J7wTE5LXypl_nfJE5iC7CmtuQ6ZX_9g-rcGecJWQd2TY8_4cXTMs_Dfh0oZmL2s9-4IAZlKKhPvlWpMzmYmICp6ZF6D7Rf0Yq8FRP47XZIeepbe-ZNP_9hXsb8EggqMN7jQJe3i-Y_O7ge54M3LIfMlCog0R5yoUaf1HDjODPdLQmngaAg",
 	<< Always 981 Character Length >> // Keep this token in persistant memory for all other future post requests.
 	"last_login": "2014-01-01T23:28:56.782Z" <<Format: YY-MM-DDThh:mm:ss.ms>>
