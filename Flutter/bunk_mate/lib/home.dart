@@ -91,6 +91,16 @@ class _HomeState extends State<Home> {
                   color: Colors.redAccent,
                 ),
 
+                SizedBox(height: 35,),
+                RaisedButton(
+                  onPressed: () => Navigator.pushNamed(context, "timeTableForm"),
+                  child: Text(
+                    "Time Table Maker",
+                    style: TextStyle(fontSize: 23),
+                  ),
+                  color: Colors.redAccent,
+                ),
+
               ]
 
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'API.dart';
 import 'storage.dart';
-import 'helperFunctions.dart';
+import 'AlertFunctions.dart';
 
 
 class Login extends StatefulWidget {
@@ -78,7 +78,7 @@ class _LoginState extends State<Login> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                            Icons.whatshot,
+                            Icons.vpn_key,
                             color: const Color(0xFF000000),
                             size: 35.0),
                         SizedBox(width: 24,),

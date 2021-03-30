@@ -5,6 +5,9 @@ import 'joinRoom.dart';
 import 'myRooms.dart';
 import 'roomCreated.dart';
 import 'login.dart';
+import 'enterTimeTable.dart';
+import 'createSubject.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -30,6 +33,8 @@ class MyApp extends StatelessWidget {
         "joinRoom": (context) => JoinRoom(),
         "myRooms": (context) => MyRooms(),
         "created": (context) => RoomID(),
+        "timeTableForm": (context) => TimeTableForm(),
+        "createSubject": (context) => CreateSubject(),
       },
     );
   }

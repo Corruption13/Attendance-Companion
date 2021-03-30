@@ -1,16 +1,37 @@
 import 'package:flutter/material.dart';
 import 'API.dart';
+import 'AlertFunctions.dart';
 
 class JoinRoom extends StatefulWidget {
-  JoinRoom({Key key}) : super(key: key);
   @override
-  _JoinRoomState createState() => new _JoinRoomState();
+  _JoinRoomState createState() => _JoinRoomState();
 }
 
 class _JoinRoomState extends State<JoinRoom> {
 
   String _code;
   String _debugLocalIP;
+
+  final GlobalKey<FormState>  _formKey = GlobalKey<FormState>();
+
+  Widget _buildName(){
+    return TextFormField(
+      decoration: InputDecoration(labelText: "Room Name*"),
+      // ignore: missing_return
+      validator: (String value){
+        if(value.isEmpty){
+          return "Name Required";
+        }
+
+      },
+      onSaved: (String value){
+        _code = value;
+      },
+
+    );
+  }
+
+
 
   Widget _buildLocalIP(){
     return TextFormField(
@@ -25,76 +46,86 @@ class _JoinRoomState extends State<JoinRoom> {
     );
   }
 
-  final GlobalKey<FormState>  _formKey = GlobalKey<FormState>();
-
-  @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('App Name'),
-      ),
-      body:
-      new Container(
-        child:
-        new Center(
-          child:
-          new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                new Padding(
-                  child:
-                  new Text(
+    return Scaffold(
 
-                    "Room ID",
-                    style: new TextStyle(fontSize:42.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w900,
-                        fontFamily: "Roboto"),
+      body: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Container(
+
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 100, 0, 10),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                            Icons.create,
+                            color: const Color(0xFF000000),
+                            size: 35.0),
+                        SizedBox(width: 24,),
+                        Text(
+                          "Join Room",
+                          style:  TextStyle(fontSize:30.0,
+                              color: const Color(0xFF000000),
+                              fontWeight: FontWeight.w200,
+                              fontFamily: "Roboto"),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                        )
+                      ]
+
                   ),
+                  _buildName(),
 
-                  padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 3.0),
-                ),
+                  SizedBox(height: 75,),
+                  RaisedButton(
+                    color: Colors.amberAccent,
+                    child:Text("Submit"),
+                    onPressed:  () async{
+                      if(!_formKey.currentState.validate()){
+                        return;
+                      }
+                      _formKey.currentState.save();
+                      print("debug");
 
-                new Padding(
-                  child:
-                  new TextField(
-                    textAlign: TextAlign.center,
-                    style: new TextStyle(fontSize:42.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w300,
-                        fontFamily: "Roboto"),
+                      var item = await joinRoomAPI(_code, _debugLocalIP);
+                      print("ITEM: " + item);
+                      if(item == -1){
+                        showAlertSimple(context, "Error", "API could not be reached");
+                      }
+                      else if(item==3){
+                        showAlertSimple(context, "Error", "Invalid Code");
+                      }
+
+                      else if(item==1){
+                        showAlertSimple(context, "Error", "Already in Room");
+                      }
+                      else{
+                        print(item);
+                        Navigator.pushNamed(context, "created", arguments: item );
+                      }
+
+                    },
+
                   ),
+                  SizedBox(height:20),
+                  _buildLocalIP(),
 
-                  padding: const EdgeInsets.fromLTRB(24.0, 10.0, 24.0, 24.0),
-                ),
 
-                _buildLocalIP(),
-
-              ]
-
+                ],
+              ),
+            ),
           ),
-
         ),
-
-        padding: const EdgeInsets.all(30.0),
-        alignment: Alignment.center,
       ),
-
-      floatingActionButton: new FloatingActionButton(
-          child: Text("Join"),
-          onPressed: (){
-            if(!_formKey.currentState.validate()){
-              return;
-            }
-
-            _formKey.currentState.save();
-            joinRoomAPI(_code, _debugLocalIP);
-
-          },),
     );
   }
-  void fabPressed() {}
-
 }
