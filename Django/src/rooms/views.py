@@ -4,7 +4,8 @@ from rest_framework.authtoken.models import Token
 from .models import Room   
 from users.models import User 
 from status.models import Status                   
-from .serializers import CreateRoomSerializer    
+from .serializers import CreateRoomSerializer  
+from .serializers import AddTimetableSerializer    
 from rest_framework.decorators import api_view
 import json
 
@@ -12,9 +13,10 @@ import json
 """
     API Response Table:
 
-    400 : Invalid POST
+    400: Invalid POST
     201: Room Created
     401: User not logged in
+    403: User not owner or admin
 
 """
 
@@ -22,12 +24,15 @@ import json
 def room_create(request):
     if request.method == 'POST':                                      
         room_serializer = CreateRoomSerializer(data=request.data)
-        room_serializer.initial_data["timetable"] = json.dumps(room_serializer.initial_data["timetable"], indent=4)
+        #room_serializer.initial_data["timetable"] = json.dumps(room_serializer.initial_data["timetable"], indent=4)
         if room_serializer.is_valid():
             #token = Token.objects.filter(user=room_serializer.validated_data["owner"])  #to make sure owner is a logged in user
-            token = Token.objects.filter(key=request.META['HTTP_AUTHORIZATION']) 
+            #Key = request.META['HTTP_AUTHORIZATION']
+            #print(Key)
+            #token = Token.objects.filter(key=Key) 
 
-            if token:
+            #if token:
+            if True:
 
                 user = Token.objects.get(key=request.META['HTTP_AUTHORIZATION']).user  # Retrieve the user linked to the token provided. 
                 room = room_serializer.save(owner=user)
@@ -43,11 +48,33 @@ def room_create(request):
             return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST','GET'])
+def add_timetable(request):
+    if request.method == 'POST':                                      
+        room_serializer = AddTimetableSerializer(data=request.data)
+        room_serializer.initial_data["timetable"] = json.dumps(room_serializer.initial_data["timetable"], indent=4)
+        if room_serializer.is_valid():
+            #token = Token.objects.filter(user=room_serializer.validated_data["owner"])  #to make sure owner is a logged in user
+            token = Token.objects.filter(key=request.META['HTTP_AUTHORIZATION']) 
 
+            if token:
 
-                 
-    
+                user = Token.objects.get(key=request.META['HTTP_AUTHORIZATION']).user  # Retrieve the user linked to the token provided. 
+                priority = Status.objects.filter(username=user, room_id=room)
+                if priority >=1:
+                    room = room_serializer.save()
+                    return Response(status=status.HTTP_201_CREATED)
+                else:
+                    return Response({'error': 'User doesnt have permission'}, status=status.HTTP_403_FORBIDDEN)
+                
+            else:
+                return Response({'error': 'User not logged in'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(room_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    if request.method == 'GET': 
+        room_serializer = AddTimetableSerializer(data=request.data)
+        room_serializer.initial_data["timetable"] = json.loads(room_serializer.initial_data["timetable"])
 
 
 

@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from rooms.views import room_create
+from rooms.views import room_create, add_timetable
 from users.views import user_register, user_login
 from status.views import room_join
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('register/', user_register),
     path('login/', user_login),
     path('create/', room_create),     
-    path('join/', room_join),     
+    path('join/', room_join), 
+    path('create/timetable', add_timetable), 
       
 ]

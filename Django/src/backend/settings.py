@@ -22,7 +22,7 @@ SECRET_KEY = 'o9%spq+kp^8#gxqj_9lo3-4$ud-t!8o^^tdyo#-2co9fp-)l+^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','192.168.6.7', '192.168.1.10','192.168.1.2']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','192.168.6.7', '192.168.1.10','192.168.1.2','192.168.1.3']
 
 
 # Application definition
@@ -84,6 +84,14 @@ REST_FRAMEWORK = {
 }
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+
+# CELERY STUFF
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
 
 
 # Database
